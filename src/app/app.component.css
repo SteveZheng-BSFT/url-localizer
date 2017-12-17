@@ -1,0 +1,23 @@
+.main-container {
+  width: 576px;
+  border: 1px solid black;
+}
+
+.header {
+  background-color: beige;
+  padding: 10px;
+}
+
+p {
+  word-wrap: break-word;
+}
+
+.float-btn {
+  display: none;
+}
+
+.plain-text:hover .float-btn {
+  display: block;
+  position: absolute;
+  right: 5px;
+}
