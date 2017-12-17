@@ -48,11 +48,22 @@ export class AppComponent implements OnInit {
   }
 
   submit() {
+    // use params to get domain and queries
+    const domain = this.params.find(param => param.key === 'domain').value;
+    let queries = '?';
+    this.params.forEach(param => {
+      if (param.key !== 'domain' && param.key && param.value) {
+        queries += param.key + '=' + param.value + '&';
+      }
+    });
+    // omit last &
+    queries = queries.slice(0, queries.length - 1);
+    // send
     if (chrome) {
       chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const obj = {
-          msg: 'one message',
-          result: 0
+          msg: {domain, queries},
+          result: 1
         };
         chrome.tabs.sendMessage(tabs[0].id, obj, function (res) {
           console.log('sent');
@@ -66,7 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   addPair() {
-    this.params.unshift(
+    this.params.splice(1, 0,
       {
         id: Math.random() + '',
         key: '',
