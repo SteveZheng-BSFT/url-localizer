@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="header">
-    <input class="form-control mb-2" type="text" placeholder="Search...">
+    <input class="form-control mb-2" [ngModel]="searchText" (ngModelChange)="search($event)" type="text" placeholder="Search...">
     <div class="row">
       <div class="col text-right">
         <span class="align-top">Stop Loading Page Once Landing</span>
@@ -27,10 +27,10 @@
     <div *ngIf="editable">
       <div class="form-row pb-2" *ngFor="let param of params; index as i">
         <div class="col-3">
-          <input type="text" class="form-control" [(ngModel)]="param.key" [disabled]="param.key === 'domain'">
+          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundK && searchText}" [(ngModel)]="param.key" [disabled]="param.key === 'domain'">
         </div>
         <div class="col">
-          <input type="text" class="form-control" [(ngModel)]="param.value">
+          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundV && searchText}" [(ngModel)]="param.value">
         </div>
         <div class="col-auto">
           <button class="btn btn-outline-danger" (click)="deleteParam(i)" [disabled]="param.key === 'domain'">Delete</button>

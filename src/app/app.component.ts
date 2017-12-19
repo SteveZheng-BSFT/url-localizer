@@ -10,8 +10,9 @@ declare var chrome;
 export class AppComponent implements OnInit {
   editable: boolean;
   instruction: string;
-  params: {id: string, key: string, value: string}[] = [];
+  params: {key: string, value: string, foundK?: boolean, foundV?: boolean}[] = [];
   pauseWeb: boolean;
+  searchText: string;
 
   ngOnInit() {
     this.editable = true;
@@ -21,10 +22,9 @@ export class AppComponent implements OnInit {
   }
 
   setParams() {
-    const domain = localStorage.getItem('currentDomain1020');
+    const domain = localStorage.getItem('currentDomain1020') || '';
     const queries = localStorage.getItem('currentQueries1020');
     this.params.push({
-      id: '1',
       key: 'domain',
       value: domain
     });
@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
         } catch (e) {
         }
         this.params.push({
-          id: Math.random() + '',
           key,
           value
         });
@@ -89,7 +88,6 @@ export class AppComponent implements OnInit {
   addPair() {
     this.params.splice(1, 0,
       {
-        id: Math.random() + '',
         key: '',
         value: ''
       }
@@ -109,5 +107,18 @@ export class AppComponent implements OnInit {
     this.pauseWeb = pauseWeb;
     localStorage.setItem('pauseWeb1020', this.pauseWeb + '');
     this.sendMessage({pauseWeb}, 'config');
+  }
+
+  search(input: string) {
+    this.searchText = input;
+    if (!input) {
+      return;
+    }
+    console.log(this.params);
+    this.params.forEach(param => {
+      param.foundK = param.key.includes(input);
+      param.foundV = param.value.includes(input);
+    });
+
   }
 }
