@@ -1,8 +1,8 @@
 // receiving client's url and do math
 chrome.runtime.onMessage.addListener(function(req, sender, sendRes) {
-  if (req.result) {
-    localStorage.setItem("currentDomain", req.msg.domain);
-    localStorage.setItem("currentQueries", req.msg.queries);
+  if (req.type === 'url') {
+    localStorage.setItem("currentDomain1020", req.msg.domain);
+    localStorage.setItem("currentQueries1020", req.msg.queries);
     sendRes({
       msg: req.msg
     });

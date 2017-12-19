@@ -11,16 +11,18 @@ export class AppComponent implements OnInit {
   editable: boolean;
   instruction: string;
   params: {id: string, key: string, value: string}[] = [];
+  pauseWeb: boolean;
 
   ngOnInit() {
     this.editable = true;
     this.instruction = 'Copy All';
+    this.pauseWeb = JSON.parse(localStorage.getItem('pauseWeb1020')) || false;
     this.setParams();
   }
 
   setParams() {
-    const domain = localStorage.getItem('currentDomain');
-    const queries = localStorage.getItem('currentQueries');
+    const domain = localStorage.getItem('currentDomain1020');
+    const queries = localStorage.getItem('currentQueries1020');
     this.params.push({
       id: '1',
       key: 'domain',
@@ -59,14 +61,22 @@ export class AppComponent implements OnInit {
     // omit last &
     queries = queries.slice(0, queries.length - 1);
     // send
+    this.sendMessage({domain, queries}, 'url');
+  }
+
+  sendMessage(msg: any, type: string) {
     if (chrome) {
       chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const obj = {
-          msg: {domain, queries},
-          result: 1
+          msg: msg,
+          type
         };
         chrome.tabs.sendMessage(tabs[0].id, obj, function (res) {
-          console.log('sent');
+          if (res && res.type === 'url') {
+            console.log('sent');
+            localStorage.removeItem('currentDomain1020');
+            localStorage.removeItem('currentQueries1020');
+          }
         });
       });
     }
@@ -93,5 +103,11 @@ export class AppComponent implements OnInit {
   copyText() {
     this.instruction = 'Copied !';
     setTimeout(() => this.instruction = 'Copy All', 1500);
+  }
+
+  saveConfig(pauseWeb: boolean) {
+    this.pauseWeb = pauseWeb;
+    localStorage.setItem('pauseWeb1020', this.pauseWeb + '');
+    this.sendMessage({pauseWeb}, 'config');
   }
 }

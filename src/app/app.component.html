@@ -1,6 +1,15 @@
 <div class="main-container">
   <div class="header">
     <input class="form-control mb-2" type="text" placeholder="Search...">
+    <div class="row">
+      <div class="col text-right">
+        <span class="align-top">Stop Loading Page Once Landing</span>
+        <label class="switch mb-0">
+          <input type="checkbox" [ngModel]="pauseWeb" (ngModelChange)="saveConfig($event)">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
     <div class="row no-gutters">
       <div class="col">
         <button class="btn btn-success btn-block" (click)="toggle()">{{editable ? 'Plain Text' : 'Edit'}}</button>
