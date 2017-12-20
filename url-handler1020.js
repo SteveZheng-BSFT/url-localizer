@@ -2,10 +2,19 @@
 let domain = window.location.hostname;
 let queries = window.location.search;
 let href = window.location.href;
-let pauseWeb = JSON.parse(localStorage.getItem('pauseWeb1020')) || false;
 
-send(domain, queries);
+askConfigInfo().then(pauseWeb => stopLoading(pauseWeb));
+
+send({domain, queries}, 'url');
 listen();
+
+function askConfigInfo() {
+  return new Promise((resolve, reject) => {
+    send(null, 'config', function (res) {
+      resolve(res.msg.pauseWeb);
+    });
+  });
+}
 
 function refresh(msg) {
   const newDomain = msg.domain;
@@ -19,32 +28,38 @@ function refresh(msg) {
   document.location.href = newUrl;
 }
 
-function send(domain, queries) {
+function send(msg, type, callback) {
   chrome.runtime.sendMessage(
     {
-      msg: {domain, queries},
-      type: 'url'
+      msg: msg,
+      type
     },
     function (res) {
       if (res) {
         // if send successful
         console.log(res.msg);
-        if (pauseWeb) {
-          window.stop();
+        if (callback) {
+          callback(res);
         }
       }
     }
   );
 }
 
+function stopLoading(pauseWeb) {
+  if (pauseWeb) {
+    window.stop();
+  }
+}
+
 function listen() {
   chrome.runtime.onMessage.addListener(function (req, sender, sendRes) {
-    console.log(sender.tab ? 'from contentScript' + sender.tab.url : 'from extension');
+    console.log(sender.tab ? 'from contentScript' + sender.tab.url : 'from extension' + req);
     if (req && req.type) {
       switch (req.type) {
         case 'url':
-          refresh(req.msg);
           sendRes(req);
+          refresh(req.msg);
           break;
         case 'config':
           pauseWeb = req.msg.pauseWeb;

@@ -1,6 +1,5 @@
 .main-container {
   width: 576px;
-  border: 1px solid black;
 }
 
 .header {
@@ -9,7 +8,8 @@
 }
 
 p {
-  word-wrap: break-word;
+  word-wrap: break-word; /* if a lone word overflows, break it to next line */
+  word-break: break-all; /* normal -> break if meet a dash or overflow, break-all -> break only overflow */
 }
 
 .float-btn {
@@ -38,7 +38,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: gainsboro;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -56,7 +56,7 @@ p {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #3DCD5F;
 }
 
 input:focus + .slider {
@@ -76,4 +76,8 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.border {
+  border-width: 2px!important;
 }

@@ -18,11 +18,12 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background1020.js"
     ]
   },
   "content_scripts": [
     {
+      "run_at": "document_start",
       "matches": [
         "http://*/",
         "http://*/*",
@@ -30,7 +31,7 @@
         "https://*/*"
       ],
       "js": [
-        "url-handler.js"
+        "url-handler1020.js"
       ]
     }
   ]

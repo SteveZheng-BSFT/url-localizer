@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 // syntax to avoid error by typescript for non-exist lib
 declare var chrome;
 
@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   params: {key: string, value: string, foundK?: boolean, foundV?: boolean}[] = [];
   pauseWeb: boolean;
   searchText: string;
+  @ViewChild('plainText') plainText: ElementRef;
 
   ngOnInit() {
     this.editable = true;
@@ -73,8 +74,8 @@ export class AppComponent implements OnInit {
         chrome.tabs.sendMessage(tabs[0].id, obj, function (res) {
           if (res && res.type === 'url') {
             console.log('sent');
-            localStorage.removeItem('currentDomain1020');
-            localStorage.removeItem('currentQueries1020');
+            localStorage.setItem('pauseWeb1020', false + '');
+            window.close();
           }
         });
       });
@@ -99,14 +100,17 @@ export class AppComponent implements OnInit {
   }
 
   copyText() {
-    this.instruction = 'Copied !';
+    // select
+    window.getSelection().selectAllChildren(this.plainText.nativeElement);
+    // copy
+    const success = document.execCommand('copy');
+    this.instruction = success ? 'Copied !' : 'Try Again';
     setTimeout(() => this.instruction = 'Copy All', 1500);
   }
 
   saveConfig(pauseWeb: boolean) {
     this.pauseWeb = pauseWeb;
     localStorage.setItem('pauseWeb1020', this.pauseWeb + '');
-    this.sendMessage({pauseWeb}, 'config');
   }
 
   search(input: string) {
@@ -114,7 +118,6 @@ export class AppComponent implements OnInit {
     if (!input) {
       return;
     }
-    console.log(this.params);
     this.params.forEach(param => {
       param.foundK = param.key.includes(input);
       param.foundV = param.value.includes(input);
