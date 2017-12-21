@@ -35,13 +35,13 @@
     <div *ngIf="editable">
       <div class="form-row pb-2" *ngFor="let param of params; index as i">
         <div class="col-3">
-          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundK && searchText}" [(ngModel)]="param.key" [disabled]="param.key === 'domain'">
+          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundK && searchText}" [(ngModel)]="param.key" [disabled]="param.key === 'Non-Queries'">
         </div>
         <div class="col">
           <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundV && searchText}" [(ngModel)]="param.value">
         </div>
         <div class="col-auto">
-          <button class="btn btn-outline-danger" (click)="deleteParam(i)" [disabled]="param.key === 'domain'">Delete</button>
+          <button class="btn btn-outline-danger" (click)="deleteParam(i)" [disabled]="param.key === 'Non-Queries'">Delete</button>
         </div>
       </div>
     </div>

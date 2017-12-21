@@ -1,11 +1,10 @@
 // inject this file to client's page to get url
-let domain = window.location.hostname;
 let queries = window.location.search;
-let href = window.location.href;
+let nonQueries = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
 askConfigInfo().then(pauseWeb => stopLoading(pauseWeb));
 
-send({domain, queries}, 'url');
+send({nonQueries, queries}, 'url');
 listen();
 
 function askConfigInfo() {
@@ -17,15 +16,8 @@ function askConfigInfo() {
 }
 
 function refresh(msg) {
-  const newDomain = msg.domain;
-  const newQueries = msg.queries;
-  let newUrl = href.replace(domain, newDomain);
-  if (queries) {
-    newUrl = newUrl.replace(queries, newQueries)
-  } else {
-    newUrl = newUrl + newQueries;
-  }
-  document.location.href = newUrl;
+  console.log(msg.nonQueries + msg.queries)
+  window.location.assign(msg.nonQueries + msg.queries);
 }
 
 function send(msg, type, callback) {
@@ -61,10 +53,6 @@ function listen() {
           sendRes(req);
           refresh(req.msg);
           break;
-        case 'config':
-          pauseWeb = req.msg.pauseWeb;
-          localStorage.setItem('pauseWeb1020', pauseWeb + '');
-          sendRes(req);
       }
     }
   });

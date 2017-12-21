@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   }
 
   setParams() {
-    const domain = localStorage.getItem('currentDomain1020') || '';
+    const nonQueries = localStorage.getItem('currentNonQueries1020') || '';
     const queries = localStorage.getItem('currentQueries1020');
     this.params.push({
-      key: 'domain',
-      value: domain
+      key: 'Non-Queries',
+      value: nonQueries
     });
     if (queries) {
       // ?asdf=asdf&sdf=ggas
@@ -50,18 +50,37 @@ export class AppComponent implements OnInit {
   }
 
   submit() {
-    // use params to get domain and queries
-    const domain = this.params.find(param => param.key === 'domain').value;
+    // use params to get non queries part
+    let nonQueries = this.params.find(param => param.key === 'Non-Queries').value;
+    // add http(s) if user didn't add it because location.href can't refresh w/o protocol
+    nonQueries = this.processProtocol(nonQueries);
+    const queries = this.constructQueries();
+    // send
+    this.sendMessage({nonQueries, queries}, 'url');
+  }
+
+  private processProtocol(nonQueries): string {
+    if (!nonQueries.includes('http')) {
+      const addedProtocol = localStorage.getItem('currentNonQueries1020').search(/http(s)?:/);
+      if (addedProtocol) {
+        return addedProtocol + '//' + nonQueries;
+      } else {
+        return 'http://' + nonQueries;
+      }
+    } else {
+      return nonQueries;
+    }
+  }
+
+  constructQueries(): string {
     let queries = '?';
     this.params.forEach(param => {
-      if (param.key !== 'domain' && param.key && param.value) {
+      if (param.key !== 'Non-Queries' && param.key && param.value) {
         queries += param.key + '=' + param.value + '&';
       }
     });
-    // omit last &
-    queries = queries.slice(0, queries.length - 1);
-    // send
-    this.sendMessage({domain, queries}, 'url');
+    // omit last '&' or single '?'
+    return queries.slice(0, queries.length - 1);
   }
 
   sendMessage(msg: any, type: string) {
@@ -114,13 +133,15 @@ export class AppComponent implements OnInit {
   }
 
   search(input: string) {
+    // assign back here because in template, empty string shouldn't highlight div
     this.searchText = input;
     if (!input) {
       return;
     }
+    input = input.toLowerCase();
     this.params.forEach(param => {
-      param.foundK = param.key.includes(input);
-      param.foundV = param.value.includes(input);
+      param.foundK = param.key.toLowerCase().includes(input);
+      param.foundV = param.value.toLowerCase().includes(input);
     });
 
   }
