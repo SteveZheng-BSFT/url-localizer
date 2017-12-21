@@ -16,7 +16,9 @@ Version 1.0.0
 7. Copy all parameters easily
 
 ## Screenshots
-
+![screenshot1](./screenshots/s1.png)
+![screenshot2](./screenshots/s2.png)
+![screenshot3](./screenshots/s3.png)
 
 ## Tech Details
 
@@ -24,7 +26,7 @@ Version 1.0.0
 This project's client is developing using Angular 5.0.0 and Bootstrap 4 beta 2. Background and Content Script is using Javascript.
 
 ### Architecture
-
+![architecture](./screenshots/arch.png)
 
 ## Further
 
