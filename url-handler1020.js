@@ -16,7 +16,6 @@ function askConfigInfo() {
 }
 
 function refresh(msg) {
-  console.log(msg.nonQueries + msg.queries)
   window.location.assign(msg.nonQueries + msg.queries);
 }
 

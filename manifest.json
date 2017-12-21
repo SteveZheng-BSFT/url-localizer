@@ -1,13 +1,13 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "URL Localizer",
   "description": "This extension allows the user to change the domain or url parameters easily before loading page.",
-  "version": "1.0",
+  "version": "1.0.0",
   "icons": {},
   "browser_action": {
     "default_icon": "imgs/icon.png",
     "default_popup": "dist/index.html",
-    "default_title": "Start Listening"
+    "default_title": "Start Capturing"
   },
   "author": "Zeshi (Steve) Zheng",
   "permissions": [
