@@ -2,7 +2,7 @@
 
 This is a Free Chrome Extension that helps engineers to capture and modify url.     
 
-Spread words if you like it!
+Spread words if you like it! ☘️☘️☘️☘️☘️
 
 ## Feature
 
@@ -16,8 +16,17 @@ Version 1.0.0
 7. Copy all parameters easily
 
 ## Screenshots
+
+🐬  🐬  🐬  🐬  🐬  🐬  🐬  🐬  🐬
+
 ![screenshot1](./screenshots/s1.png)
+
+🐥  🐥  🐥  🐥  🐥  🐥  🐥  🐥  🐥
+
 ![screenshot2](./screenshots/s2.png)
+
+🐑  🐑  🐑  🐑  🐑  🐑  🐑  🐑  🐑
+
 ![screenshot3](./screenshots/s3.png)
 
 ## Tech Details
