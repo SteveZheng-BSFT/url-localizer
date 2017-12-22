@@ -11,7 +11,7 @@
     </div>
     <div class="row">
       <div class="col text-right">
-        <span class="align-top">Stop Loading Page Once Landing</span>
+        <span class="align-top">Pause Before Loading Page</span>
         <label class="switch mb-0">
           <input type="checkbox" [ngModel]="pauseWeb" (ngModelChange)="saveConfig($event)">
           <span class="slider round"></span>
@@ -20,13 +20,13 @@
     </div>
     <div class="row no-gutters">
       <div class="col">
-        <button class="btn btn-outline-success btn-block" (click)="toggle()">{{editable ? 'Plain Text' : 'Edit Params'}}</button>
+        <button class="btn btn-outline-success btn-block" (click)="toggleEditable()">{{editable ? 'Plain Text' : 'Edit Params'}}</button>
       </div>
       <div class="col px-2">
         <button class="btn btn-outline-success btn-block" (click)="addPair()">Add A Param</button>
       </div>
       <div class="col">
-        <button class="btn btn-primary btn-block" type="submit" (click)="submit()">Reload Page</button>
+        <button class="btn btn-primary btn-block" type="submit" (click)="submit()">Refresh Page</button>
       </div>
     </div>
   </div>
@@ -35,22 +35,22 @@
     <div *ngIf="editable">
       <div class="form-row pb-2" *ngFor="let param of params; index as i">
         <div class="col-3">
-          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundK && searchText}" [(ngModel)]="param.key" [disabled]="param.key === 'Non-Queries'">
+          <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundK && searchText}" [(ngModel)]="param.key" [disabled]="param.key === 'Base URL'">
         </div>
         <div class="col">
           <input type="text" (focus)="$event.target.select()" class="form-control" [ngClass]="{'border border-success': param.foundV && searchText}" [(ngModel)]="param.value">
         </div>
         <div class="col-auto">
-          <button class="btn btn-outline-danger" (click)="deleteParam(i)" [disabled]="param.key === 'Non-Queries'">Delete</button>
+          <button class="btn btn-outline-danger" (click)="deleteParam(i)" [disabled]="param.key === 'Base URL'">Delete</button>
         </div>
       </div>
     </div>
 
     <div *ngIf="!editable" class="plain-text" #plainText>
       <button class="btn btn-primary btn-sm float-btn" (click)="copyText()">{{instruction}}</button>
-      <p class="mb-1" *ngFor="let param of params">
+      <p class="mb-2" *ngFor="let param of params">
         <!--&nbsp; is non-break space-->
-        {{param.key + '&nbsp;:&nbsp;' + param.value}}
+        <span [ngClass]="{'text-info': param.foundK && searchText}">{{param.key}}</span>&nbsp;:&nbsp;<span [ngClass]="{'text-info': param.foundV && searchText}">{{param.value}}</span>
       </p>
     </div>
   </div>

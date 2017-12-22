@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 // syntax to avoid error by typescript for non-exist lib
 declare var chrome;
 
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     const nonQueries = localStorage.getItem('currentNonQueries1020') || '';
     const queries = localStorage.getItem('currentQueries1020');
     this.params.push({
-      key: 'Non-Queries',
+      key: 'Base URL',
       value: nonQueries
     });
     if (queries) {
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
   submit() {
     // use params to get non queries part
-    let nonQueries = this.params.find(param => param.key === 'Non-Queries').value;
+    let nonQueries = this.params.find(param => param.key === 'Base URL').value;
     // add http(s) if user didn't add it because location.href can't refresh w/o protocol
     nonQueries = this.processProtocol(nonQueries);
     const queries = this.constructQueries();
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
   constructQueries(): string {
     let queries = '?';
     this.params.forEach(param => {
-      if (param.key !== 'Non-Queries' && param.key && param.value) {
+      if (param.key !== 'Base URL' && param.key && param.value) {
         queries += param.key + '=' + param.value + '&';
       }
     });
@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  toggle() {
+  toggleEditable() {
     this.editable = !this.editable;
   }
 
@@ -143,6 +143,11 @@ export class AppComponent implements OnInit {
       param.foundK = param.key.toLowerCase().includes(input);
       param.foundV = param.value.toLowerCase().includes(input);
     });
+  }
 
+  @HostListener('window:keyup', ['$event']) onKeyUp(event: KeyboardEvent) {
+    if (event.keyCode === 13) {
+      this.submit();
+    }
   }
 }

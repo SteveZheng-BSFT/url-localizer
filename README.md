@@ -15,6 +15,11 @@ Version 1.0.0
 6. Case-ignored Search
 7. Copy all parameters easily
 
+Version 1.1.0
+1. Can press 'Return' key to trigger refreshing
+2. fixed a bug that you can't search in 'plain text' mode
+3. Changed confusing words
+
 ## Screenshots
 
 🐬  🐬  🐬  🐬  🐬  🐬  🐬  🐬  🐬
